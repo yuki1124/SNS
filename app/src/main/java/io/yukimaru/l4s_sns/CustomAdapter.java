@@ -23,16 +23,16 @@ public class CustomAdapter extends ArrayAdapter<Item> {
     }
 
     @Override
-    public int getCount(){//情報のゲット
+    public int getCount(){//viewに必要なアイテムの数をitemsから数える
         return items.size();
     }
 
-    public Item getItem(int position){//情報のゲット
+    public Item getItem(int position){// itemsからpositionへ、対応するobjectを返す
         return items.get(position);
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){//itemに対応するviewを作ってviewHolderに返す
         final ViewHolder viewHolder;
 
         if(convertView != null){
@@ -50,8 +50,9 @@ public class CustomAdapter extends ArrayAdapter<Item> {
             convertView.setTag(viewHolder);
         }
 
-        Item item = items.get(position);
+        Item item = items.get(position);//item中のpositionの情報を取得、itemへ
 
+        //関連付け
         viewHolder.titleText.setText(item.getTitle());
         viewHolder.contentText.setText(item.getContent());
         viewHolder.likeCountText.setText(String.valueOf(item.getLikeCount()));
@@ -74,12 +75,12 @@ public class CustomAdapter extends ArrayAdapter<Item> {
         TextView likeCountText;
     }
 
-    public void setOnLikeClickListener(OnLikeClickListener likeClickListener) {
-        this.likeClickListener = likeClickListener;//OnLikeClickListenerの設定。準備。
-    }
-
     interface OnLikeClickListener {//OnLikeClickListenerという型（TextView的な）の作成
         void onLikeClick(int position);//interface->特定の機能の概要。classによってimplementsされる。
         //onLikeClickというvoidを呼び出す
+    }
+
+    public void setOnLikeClickListener(OnLikeClickListener likeClickListener) {
+        this.likeClickListener = likeClickListener;//OnLikeClickListenerの設定。準備。
     }
 }
