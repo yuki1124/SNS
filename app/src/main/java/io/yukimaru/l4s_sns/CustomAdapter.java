@@ -10,34 +10,34 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomAdapter extends ArrayAdapter<Item> {
-    List<Item> items;
+public class CustomAdapter extends ArrayAdapter<Item> {//<>内で何のためのArrayAdapterかを指定。->中身がItemであるArrayAdapter
+    //Itemをどのように表示させるか？というクラス。
+    private List<Item> items;// private->このクラスの中でしかこのListは使えないから、勝手にMainActivityで情報が更新されないようにする。触らないで！みたいな
 
     private OnLikeClickListener likeClickListener = null;
 
-
-    public CustomAdapter(Context context, int resource, List<Item> items){
+    public CustomAdapter(Context context, int resource, List<Item> items){//コンストラクタ：クラスと同じ名前のメソッド。クラスの初期化のためのメソッドで、他のクラスでCustomAdapterをどうやって使うかを提示。
         super(context, resource, items);
 
         this.items=items;
     }
 
     @Override
-    public int getCount(){//viewに必要なアイテムの数をitemsから数える
+    public int getCount(){//adapter内のアイテムの数をitemsから数える。size->要素の個数。
         return items.size();
     }
 
-    public Item getItem(int position){// itemsからpositionへ、対応するobjectを返す
+    public Item getItem(int position){// adapterが正しくものを並べられるように、どこに何の情報が入ってるかを見つける。adapterが勝手に使う。
         return items.get(position);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){//itemに対応するviewを作ってviewHolderに返す
-        final ViewHolder viewHolder;
+        final ViewHolder viewHolder;//viewHolder->情報を受け渡しを再利用
 
-        if(convertView != null){
+        if(convertView != null){//convertView->こすれば情報が消えるスタンプ的な。convertViewがnullではない時はスタンプに情報を掘る。
             viewHolder = (ViewHolder)convertView.getTag();
-        }else{
+        }else{//convertViewがnullの時はスタンプを一から作る。
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.sns, parent, false);
             viewHolder = new ViewHolder();
 
@@ -50,6 +50,7 @@ public class CustomAdapter extends ArrayAdapter<Item> {
             convertView.setTag(viewHolder);
         }
 
+        //実際に情報を掘る作業。何を掘るか？
         Item item = items.get(position);//item中のpositionの情報を取得、itemへ
 
         //関連付け
@@ -67,6 +68,15 @@ public class CustomAdapter extends ArrayAdapter<Item> {
 
         return convertView;
     }
+    public Item getItemByKey(String key) {
+        for (Item item : items) {
+            if (item.getKey().equals(key)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
 
    static class ViewHolder{
         TextView titleText;
@@ -75,8 +85,8 @@ public class CustomAdapter extends ArrayAdapter<Item> {
         TextView likeCountText;
     }
 
-    interface OnLikeClickListener {//OnLikeClickListenerという型（TextView的な）の作成
-        void onLikeClick(int position);//interface->特定の機能の概要。classによってimplementsされる。
+    interface OnLikeClickListener {//OnLikeClickListenerという型（TextView的な）の作成。新しいClassって感じ.
+        void onLikeClick(int position);
         //onLikeClickというvoidを呼び出す
     }
 
