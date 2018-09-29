@@ -101,19 +101,10 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnL
         likeCount = likeCount + 1;
         item.setLikeCount(likeCount);
 
-        Map<String, Object>postValues = new HashMap<>();
+        Map<String, Object> postValues = new HashMap<>();
         postValues.put("/" + item.getKey() + "/", item);
 
         reference.updateChildren(postValues);
     }
-//    @Override
-//    public void onLikeClick(int position){//CustomAdapterで設定したadapterのonLikeClick
-//        Item item = adapter.getItem(position);
-//        if (item == null) return;
-//
-//        int likeCount = item.getLikeCount();
-//        likeCount = likeCount + 1;
-//
-//        item.setLikeCount(likeCount);
-//    }
 }
+//♡を押して落ちる場合は、新しいkeyを追加したのに過去のfirebaseがkeyの項目が追加されていないから、怒られる。　
